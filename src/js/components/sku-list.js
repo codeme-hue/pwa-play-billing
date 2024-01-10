@@ -80,7 +80,7 @@ class SkuList extends LitElement {
 
       // price="${this.service.getSkuPrice(sku, this.locale)}"
       return html` <sku-holder
-        .type="dgfjidjfidfjidfj"
+        .type="${skuType}"
         .details=${sku}
 
         .purchase=${purchase
