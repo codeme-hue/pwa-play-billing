@@ -24,9 +24,12 @@ interface CoinValue {
  * This simulates what a database value may look like.
  */
 export const coinValues: CoinValue = {
-  coins_100: 100,
-  coins_200: 200,
-  coins_1000: 1000,
+  product_coins1: 75,
+  product_coins2: 225,
+  product_coins3: 500,
+  product_coins4: 1000,
+  product_coins5: 5000,
+  product_coins6: 7500,
 };
 
 interface InAppCoinCost {
@@ -53,9 +56,11 @@ interface SkuDB {
 }
 
 export const EXAMPLE_SKUS: SkuDB[] = [
-  { sku: 'coins_200', type: 'repeatable' },
-  { sku: 'coins_100', type: 'repeatable' },
-  { sku: 'coins_1000', type: 'repeatable' },
-  { sku: 'onetime', type: 'onetime' },
-  { sku: 'basic_sub', type: 'subscription' },
+  { sku: 'product_coins1', type: 'repeatable' },
+  { sku: 'product_coins2', type: 'repeatable' },
+  { sku: 'product_coins3', type: 'repeatable' },
+  { sku: 'product_coins4', type: 'repeatable' },
+  { sku: 'product_coins5', type: 'repeatable' },
+  { sku: 'product_coins6', type: 'repeatable' }
+  // { sku: 'basic_sub', type: 'subscription' },
 ];

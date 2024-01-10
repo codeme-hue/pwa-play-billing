@@ -1,8 +1,12 @@
 {
   "hosting": {
-    "site": "<FIREBASE_PROJECT_ID>",
+    "site": "ghost-city-408703",
     "public": "src",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "/api/**",
@@ -11,6 +15,26 @@
     ]
   },
   "functions": {
-    "predeploy": ["npm run lint", "npm --prefix \"$RESOURCE_DIR\" run build"]
+    "predeploy": [
+      "npm run lint",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ],
+    "runtime": "nodejs20",
+    "source": "functions"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

@@ -19,11 +19,11 @@
  */
 
 // service account credentials
-export const serviceAccountEmail = '';
-export const serviceAccountPrivateKey = '';
+export const serviceAccountEmail = 'firebase-adminsdk-7e4fh@ghost-city-408703.iam.gserviceaccount.com';
+export const serviceAccountPrivateKey = '63cb8b30b95343c1f603c7d90262c63da51360e9';
 
 // app package name
-export const packageName = '<PLAY_PACKAGE_NAME>';
+export const packageName = 'com.ghostcity.rgs';
 
 // RTDN pub/sub topic ID
 export const topicID = '<RTDN_TOPIC_ID>';

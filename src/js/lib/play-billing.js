@@ -44,6 +44,7 @@ export class PlayBillingService {
   async _init() {
     if (!('getDigitalGoodsService' in window)) {
       this.service = false;
+      console.log('digital goods service false');
       return;
     }
     try {
@@ -54,11 +55,13 @@ export class PlayBillingService {
       if (this.service === false) {
         // DGAPI 1.0
         // Play Billing is not available.
+        console.log('digital goods service false');
       }
     } catch (error) {
       // DGAPI 2.0
       // Play Billing is not available.
       this.service = false;
+      console.log('digital goods service false');
     }
   }
 

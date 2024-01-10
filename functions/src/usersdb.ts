@@ -128,7 +128,7 @@ export async function getUserRef(
       hasPremiumSub: false,
       numCoins: 0,
       lastQueryTime: Date.now(),
-      theme: 'orange_you_glad_I_didnt_say_banana_orange',
+      theme: 'retro_red',
     };
     const userRef = await usersRef
       .add(newUserData)

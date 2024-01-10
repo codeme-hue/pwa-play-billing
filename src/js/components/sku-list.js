@@ -77,10 +77,12 @@ class SkuList extends LitElement {
       // Find if there's a purchase with the same itemId as the SKU
       const purchase = this.purchases.find((purchase) => purchase.itemId === sku.itemId);
       const skuType = this.skuType(basicSubPurchase, premiumSubPurchase, sku.itemId);
+
+      // price="${this.service.getSkuPrice(sku, this.locale)}"
       return html` <sku-holder
-        .type="${skuType}"
+        .type="dgfjidjfidfjidfj"
         .details=${sku}
-        price="${this.service.getSkuPrice(sku, this.locale)}"
+
         .purchase=${purchase
           ? null
           : async function () {

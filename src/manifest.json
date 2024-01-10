@@ -1,17 +1,25 @@
 {
-  "name": "Web Play Billing Sample App",
+  "name": "Web Play Billing Sample",
   "short_name": "Web Play Billing",
   "description": "Web billing sample",
-  "android_package_name": "<PLAY_PACKAGE_NAME>",
+  "android_package_name": "com.ghostcity.rgs",
   "prefer_related_applications": true,
   "related_applications": [
     {
-      "id": "<PLAY_PACKAGE_NAME>",
+      "id": "com.ghostcity.rgs",
       "platform": "chromeos_play"
     }
   ],
-  "theme_color": "#821aba",
-  "background_color": "#ff8903",
+  "features": {
+    "playBilling": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": true
+  },
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

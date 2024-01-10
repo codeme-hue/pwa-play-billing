@@ -64,7 +64,6 @@ class ProfileMenu extends LitElement {
       <div style="position: relative;">
         <mwc-menu id="menu">
           ${this.loggedIn ? this.signedInHtml : this.signedOutHtml}
-          <mwc-list-item @click="${this._showGitHubPage}">About</mwc-list-item>
           <mwc-list-item @click="${this._showPlayStore}">View In Play Store</mwc-list-item>
         </mwc-menu>
       </div>
@@ -77,7 +76,7 @@ class ProfileMenu extends LitElement {
    * @memberof ProfileMenu
    */
   _showPlayStore() {
-    window.open('https://play.google.com/store/apps/details?id=<PLAY_PACKAGE_NAME>', '_blank');
+    window.open('https://play.google.com/store/apps/details?id=com.ghostcity.rgs', '_blank');
   }
 
   /**

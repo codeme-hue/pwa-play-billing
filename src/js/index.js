@@ -47,6 +47,33 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   // Setup Firebase and authentication
   const firebase = new Firebase(appBar, log);
 
+  if ('getDigitalGoodsService' in window) {
+    // Digital Goods API is supported!
+    log('Digital Goods API is suported');
+    try {
+      const service = await window.getDigitalGoodsService('https://play.google.com/billing');
+      // Google Play Billing is supported!
+      const skuDetails = await service.getDetails(['product_coins1', 'product_coins2', 'product_coins3', 'product_coins4', 'product_coins5', 'product_coins6']);
+      for (item of skuDetails) {
+        // Format the price according to the user locale. 
+        const localizedPrice = new Intl.NumberFormat(navigator.language, {
+          style: 'currency',
+          currency: item.price.currency,
+        }).format(item.price.value);
+
+        log(item.itemId.toString(), item.title, localizedPrice.toString(), item.description);
+
+        // Render the price to the UI.
+        renderProductDetails(item.itemId, item.title, localizedPrice, item.description);
+      }
+    } catch (error) {
+      // Google Play Billing is not available. Use another payment flow.
+      return;
+    }
+  } else {
+    log('Digital goods API tidak terinstall')
+  }
+
   let user = null;
   let service = null;
 
@@ -54,11 +81,14 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   try {
     let { skus } = await (await fetch('/api/getSkus')).json();
     // Convert to PlayBillingSkuConfig style for Play Billing Service class
+    log('Mengambil data skus')
     skus = skus.map((sku) => ({
       itemId: sku.sku,
       purchaseType: sku.type,
     }));
 
+    availableItems.set(skus)
+    log(skus);
     // Set up an instance of Play Billing Service
     const { PlayBillingService } = await import('./lib/play-billing');
     service = new PlayBillingService(skus);
@@ -71,6 +101,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
       // Gets the user's profile and sets the number of coins a user has
       user = new User(await firebase.getApiHeader(), log);
       if (service) {
+        profile.set(await user.getInfo());
         await marketSetup();
       }
     } else {
@@ -84,7 +115,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   profile.subscribe((p) => {
     appBar.coinAmt = p.numCoins || 0;
     if (p.theme == null) {
-      changeTheme('orange_you_glad_I_didnt_say_banana_orange');
+      changeTheme('retro_red');
     } else {
       changeTheme(p.theme);
       themePicker.purchasedTheme = p.theme;

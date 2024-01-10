@@ -155,7 +155,7 @@ export async function invalidateToken(purchaseToken: string): Promise<number> {
             numInvalidated++;
           })
           .catch((error) => {
-            console.error(`Error invalidating token : ${error}`);
+            console.error(`Error invalidati  ng token : ${error}`);
           });
       }),
     );

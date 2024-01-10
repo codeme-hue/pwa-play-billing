@@ -32,6 +32,7 @@ export class User {
    * Get the current user's info from server.
    */
   async getInfo() {
+    console.log('get user nih boss');
     try {
       const response = await (
         await fetch('/api/getUser', {

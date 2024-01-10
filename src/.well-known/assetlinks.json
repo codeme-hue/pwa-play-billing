@@ -3,8 +3,8 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "<PLAY_PACKAGE_NAME>",
-      "sha256_cert_fingerprints": ["<SIGNING_KEY_CERT>"]
+      "package_name": "com.ghostcity.rgs",
+      "sha256_cert_fingerprints": ["58:FF:96:50:26:AA:E6:FE:14:0F:25:D6:3D:F4:11:5A:9C:DB:FD:5B:49:D7:9C:F4:E8:E2:79:B4:42:63:E3:F5"]
     }
   }
 ]
