@@ -44,27 +44,92 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Material+Icons&display=block"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet" />
 </head>
-<body>
+
+<body style="font-family: 'Arial', sans-serif; background-color: #f5f5f5; margin: 0;">
+
   <app-bar id="app-bar" title="Ghost City"></app-bar>
+
   <div id="content-container">
     <coin-dialog id="coin-dialog">
       <theme-picker slot="theme" id="theme-picker"></theme-picker>
     </coin-dialog>
-    <!-- <h1>Welcome to Web Play Billing Sample App</h1>
-    <p>This is a sample application using Google Play Billing in a TWA.</p> -->
-    <div>
-      <h1>Products:</h1>
+
+    <div id="products-container">
+      <h1 class="section-title">Products</h1>
       <sku-list id="items-to-buy"></sku-list>
     </div>
   </div>
-  <p class="debug" id="debug-btn">Debug Logs</p>
-  <mwc-dialog heading="Debug Logs" id="debug-box">
-    <pre id="log-box"></pre>
-  </mwc-dialog>
-  <mwc-snackbar id="notification" labelText="Hello, I am a notification"> </mwc-snackbar>
+
+  <div id="interactive-section">
+    <div id="debug-section">
+      <p class="debug" id="debug-btn">Debug Logs</p>
+      <mwc-dialog heading="Debug Logs" id="debug-box">
+        <pre id="log-box"></pre>
+      </mwc-dialog>
+    </div>
+
+    <div id="notification-section">
+      <mwc-snackbar id="notification" labelText="Hello, I am a notification"></mwc-snackbar>
+    </div>
+  </div>
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+    }
+
+    #content-container {
+      max-width: 800px;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #products-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      color: #333;
+      text-align: center;
+    }
+
+    #app-bar {
+      margin-right: auto;
+    }
+
+    #interactive-section {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    #debug-section {
+      background-color: #f0f0f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-right: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #notification-section {
+      flex-grow: 1;
+    }
+  </style>
+
+  <!-- Your other scripts and imports here -->
+
 </body>

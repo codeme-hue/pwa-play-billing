@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { LitElement, html } from 'lit';
+import { LitElement, html, css, unsafeCSS} from 'lit-element';
 
 import '@material/mwc-button';
 
@@ -25,16 +25,9 @@ import '@material/mwc-button';
  * @extends {LitElement}
  */
 class SkuHolder extends LitElement {
-  /**
-   *
-   *
-   * @readonly
-   * @static
-   * @memberof SkuHolder
-   */
   static get properties() {
     return {
-      details: { type: Object, reflect: true }, // We may just want pass this in directly.
+      details: { type: Object, reflect: true },
       price: { type: String },
       purchase: { type: Function },
       consume: { type: Function },
@@ -42,10 +35,6 @@ class SkuHolder extends LitElement {
     };
   }
 
-  /**
-   * Creates an instance of SkuHolder.
-   * @memberof SkuHolder
-   */
   constructor() {
     super();
     this.details = {
@@ -64,36 +53,78 @@ class SkuHolder extends LitElement {
     };
 
     this.consume = () => {
-      console.log('Consume funcition not set.');
+      console.log('Consume function not set.');
     };
     this.type = 'sku';
   }
 
-  /**
-   * hasConsumeBtn validates whether or not this item is a consumable item or not. Then it indicates to the render function whether to render the HTML.
-   *
-   * @param {string} purchaseType
-   * @return {TemplateResult}
-   * @memberof SkuHolder
-   */
+  renderStyles() {
+    return css`
+      #purchase_box__${unsafeCSS(this.details.itemId)} {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 8px;
+        transition: box-shadow 0.3s ease-in-out;
+        flex-grow: 1;
+      }
+
+      #purchase_box__${unsafeCSS(this.details.itemId)}:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-family: 'Arial', sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      .coin-animation {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        animation: floatCoin 2s ease-in-out infinite;
+      }
+  
+      @keyframes floatCoin {
+        0%, 100% {
+          transform: translateY(-50%);
+        }
+        50% {
+          transform: translateY(-70%);
+        }
+      }
+
+      mwc-button {
+        margin-left: 0px;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      mwc-button:hover {
+        background-color: #555;
+      }
+    `;
+  }
+
   hasConsumeBtn(purchaseType) {
     if (purchaseType == 'onetime') {
       return html`<mwc-button
         ?disabled="${this.consume === null}"
         raised
         label="Consume ${this.details.itemId}"
+        style="background-color: #4CAF50; color: white;"
         @click="${this.consume}"
       ></mwc-button>`;
     }
     return html``;
   }
 
-  /**
-   * purchaseBtn determines whether this item is a subscription downgrade or upgrade, or a regular purchase. Then it renders the HTML for it.
-   *
-   * @return {TemplateResult}
-   * @memberof SkuHolder
-   */
   purchaseBtn() {
     let purchaseVerb;
     switch (this.type) {
@@ -110,24 +141,22 @@ class SkuHolder extends LitElement {
       ?disabled="${this.purchase === null}"
       raised
       label="${purchaseVerb} for ${this.price}"
+      style="background-color: #2196F3; color: white;"
       @click="${this.purchase}"
     ></mwc-button>`;
   }
 
-  /**
-   *
-   *
-   * @return {TemplateResult}
-   * @memberof SkuHolder
-   */
   render() {
     return html`
-      <div id="purchase_box__${this.details.itemId}">
+    <style>
+    ${this.renderStyles()}
+  </style>
+
+      <div id="purchase_box__${unsafeCSS(this.details.itemId)}">
         ${this.type === 'coin'
           ? html`<p style="font-weight: bold;">${this.details.title}</p>`
           : html`<h1>${this.details.title}</h1>`}
         <p>${this.details.description}</p>
-
         ${this.purchaseBtn()} ${this.hasConsumeBtn(this.details.purchaseType)}
       </div>
     `;
@@ -135,3 +164,4 @@ class SkuHolder extends LitElement {
 }
 
 customElements.define('sku-holder', SkuHolder);
+
