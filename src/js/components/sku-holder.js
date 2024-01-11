@@ -127,9 +127,7 @@ class SkuHolder extends LitElement {
           ? html`<p style="font-weight: bold;">${this.details.title}</p>`
           : html`<h1>${this.details.title}</h1>`}
         <p>${this.details.description}</p>
-        ${this.type === 'coin'
-          ? html``
-          : html`<p>You currently ${this.purchase === null ? '' : `don't`} own this item.</p>`}
+
         ${this.purchaseBtn()} ${this.hasConsumeBtn(this.details.purchaseType)}
       </div>
     `;

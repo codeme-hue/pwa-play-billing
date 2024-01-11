@@ -55,13 +55,15 @@ class AppBar extends LitElement {
    * @return {*}
    * @memberof AppBar
    */
+  // <span id="coinAmt">${this.coinAmt}</span> coins <span><mwc-icon>toll</mwc-icon></span>
   render() {
     return html`
       <mwc-top-app-bar-fixed>
         <div slot="title">${this.title}</div>
         ${this.photoURL !== ''
-          ? html`<p slot="actionItems" @click="${this._showCoinMenu}">
-              <span id="coinAmt">${this.coinAmt}</span> coins <span><mwc-icon>toll</mwc-icon></span>
+          // ? html`<p slot="actionItems" @click="${this._showCoinMenu}">
+          ? html`<p slot="actionItems">
+              <span id="coinAmt">${this.coinAmt}</span> coins <span></span>
             </p>`
           : html``}
         ${this.photoURL !== ''

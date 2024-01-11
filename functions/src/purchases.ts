@@ -198,6 +198,41 @@ export async function addCoins(
  * Change the user's app theme and subtract the cost from their coins.
  * @param {FirebaseFirestore.DocumentReference} userRef
  * @param {number} numCoins
+ */
+
+export async function addCoinsManual(
+  userRef: FirebaseFirestore.DocumentReference,
+  numCoins: number,
+): Promise<ChangeResult> {
+  if (!userRef) {
+    return { success: false, userCoinValue: 0 };
+  }
+
+  const userData = await getUserData(userRef);
+  if (!userData) {
+    return { success: false, userCoinValue: 0 };
+  }
+
+  const newCoinValue = userData.numCoins + numCoins;
+
+  return userRef
+    .update({
+      numCoins: newCoinValue,
+    })
+    .then(function (): ChangeResult {
+      console.log(`Users new coin value is ${newCoinValue}`);
+      return { success: true, userCoinValue: newCoinValue };
+    })
+    .catch(function (error: Error): ChangeResult {
+      console.error('Could not create new coin value in database');
+      return { success: false, userCoinValue: userData.numCoins };
+    });
+}
+
+/**
+ * Change the user's app theme and subtract the cost from their coins.
+ * @param {FirebaseFirestore.DocumentReference} userRef
+ * @param {number} numCoins
  * @param {string} themeColor
  */
 export async function setTheme(

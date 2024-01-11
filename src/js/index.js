@@ -81,14 +81,16 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   try {
     let { skus } = await (await fetch('/api/getSkus')).json();
     // Convert to PlayBillingSkuConfig style for Play Billing Service class
-    log('Mengambil data skus')
     skus = skus.map((sku) => ({
       itemId: sku.sku,
       purchaseType: sku.type,
+      description: sku.description,
+      title: sku.title,
+      price: sku.price,
+      coins: sku.coins,
     }));
 
     availableItems.set(skus)
-    log(skus);
     // Set up an instance of Play Billing Service
     const { PlayBillingService } = await import('./lib/play-billing');
     service = new PlayBillingService(skus);
@@ -102,7 +104,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
       user = new User(await firebase.getApiHeader(), log);
       if (service) {
         profile.set(await user.getInfo());
-        await marketSetup();
+        // await marketSetup();
       }
     } else {
       user = null;
@@ -112,12 +114,26 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     }
   });
 
+
+  document.addEventListener('sku-purchase', async (e) => {
+    if (e.detail.valid) {
+
+      await user.addCoinsManual(e.detail.coins);
+ 
+      // Refreshes the profiles entitlements and the purchased items.
+      await refreshPurchases(service, user);
+      notify(`${e.detail.title} Purchased!`);
+    }
+  });
+
   profile.subscribe((p) => {
     appBar.coinAmt = p.numCoins || 0;
     if (p.theme == null) {
-      changeTheme('retro_red');
+      // changeTheme('retro_red');
+      changeTheme('');
     } else {
-      changeTheme(p.theme);
+      // changeTheme(p.theme);
+      changeTheme('');
       themePicker.purchasedTheme = p.theme;
       themePicker.resetPickerSelection();
     }
@@ -153,7 +169,8 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   themePicker.themes = Object.keys(VALID_THEME_NAMES);
 
   themePicker.addEventListener('color-selected', (e) => {
-    changeTheme(e.detail.selectedColor);
+    // changeTheme(e.detail.selectedColor);
+    changeTheme('');
   });
 
   themePicker.addEventListener('color-purchased', async (e) => {
@@ -173,7 +190,8 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   });
 
   coinDialog.addEventListener('coin-dialog-close', () => {
-    changeTheme(themePicker.purchasedTheme);
+    // changeTheme(themePicker.purchasedTheme);
+    changeTheme('');
     themePicker.resetPickerSelection();
   });
 

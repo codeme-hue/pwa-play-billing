@@ -24,5 +24,6 @@ export const profile = writable({});
 export const availableItems = writable([]);
 
 // Purchases and purchase history information.
+export const coins = writable({});
 export const purchases = writable([]);
 export const purchaseHistory = writable([]);

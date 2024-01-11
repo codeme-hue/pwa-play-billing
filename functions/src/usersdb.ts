@@ -45,6 +45,7 @@ export interface User {
   numCoins: number;
   lastQueryTime: number;
   theme: string;
+  best: number,
 }
 
 /**
@@ -129,6 +130,7 @@ export async function getUserRef(
       numCoins: 0,
       lastQueryTime: Date.now(),
       theme: 'retro_red',
+      best: 0,
     };
     const userRef = await usersRef
       .add(newUserData)

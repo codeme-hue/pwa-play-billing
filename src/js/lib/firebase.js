@@ -46,15 +46,15 @@ export class Firebase {
     // TODO: Update user in state management so other things that rely on the user being authenticated can be properly activated
     this.firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        this.log(user.email);
-        this.log(user.photoURL);
-        this.log(user.displayName);
+        // this.log(user.email);
+        // this.log(user.photoURL);
+        // this.log(user.displayName);
         this.bearer.append('Authorization', `Bearer ${await user.getIdToken(false)}`);
         this.bearer.append('Content-Type', 'application/json');
         authenticated.set(true);
         this.appBar.setAttribute('photourl', user.photoURL);
       } else {
-        this.log('no user');
+        // this.log('no user');
         authenticated.set(false);
         this.appBar.setAttribute('photourl', '');
       }

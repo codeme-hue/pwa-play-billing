@@ -44,7 +44,7 @@ https://github.com/material-components/material-components-web-components/blob/m
 
 */
 html {
-  --mdc-theme-primary: red;
+  --mdc-theme-primary: black;
 }
 
 .debug {

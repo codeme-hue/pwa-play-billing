@@ -35,6 +35,7 @@ class SkuList extends LitElement {
       service: { type: Object }, // Instance of PlayBillingService, see 'src/js/lib/play-billing.js'
       locale: { type: String },
       type: { type: String }, // Either photo, sku, or coin
+      addcoins: {type: Function},
     };
   }
 
@@ -48,6 +49,9 @@ class SkuList extends LitElement {
     this.service = {};
     this.locale = 'en-US';
     this.type = 'sku';
+    this.addcoins = () => {
+      console.log('nah fungsi nya bisa nih');
+    }
   }
 
   /**
@@ -82,34 +86,16 @@ class SkuList extends LitElement {
       return html` <sku-holder
         .type="${skuType}"
         .details=${sku}
-
+        price="${sku.price}"
         .purchase=${purchase
           ? null
           : async function () {
-              let purchaseMade;
-              switch (skuType) {
-                case 'downgrade':
-                  // downgrade from premium to basic subscription
-                  purchaseMade = await this.service.purchase(
-                    sku.itemId,
-                    premiumSubPurchase,
-                    skuType,
-                  );
-                  break;
-                case 'upgrade':
-                  // upgrade from basic to premium subscription
-                  purchaseMade = await this.service.purchase(sku.itemId, basicSubPurchase, skuType);
-                  break;
-                default:
-                  // make a normal purchase
-                  purchaseMade = await this.service.purchase(sku.itemId);
-              }
-              const { response, valid } = purchaseMade;
               const e = new CustomEvent('sku-purchase', {
                 detail: {
-                  sku,
-                  response,
-                  valid,
+                  sku: sku.sku,
+                  valid: true,
+                  title: sku.title,
+                  coins: sku.coins,
                 },
                 bubbles: true,
                 composed: true,

@@ -161,6 +161,7 @@ app.post('/getUser', async (request: RequestWithUser, response: functions.Respon
       hasPremiumSub: userData.hasPremiumSub,
       numCoins: userData.numCoins,
       theme: userData.theme,
+      best: userData.best, 
     });
     return;
   }
@@ -199,6 +200,29 @@ app.post('/setTheme', async (request: RequestWithUser, response: functions.Respo
   }
 
   response.json({ error: 'error changing theme.' });
+});
+
+app.post('/addCoinsManual', async (request: RequestWithUser, response: functions.Response) => {
+  functions.logger.info('Add coins manual request came in', { structuredData: true });
+  usersdb.verifyAuth(request);
+  const authenticatedUserRef = await usersdb.authenticateUser(request);
+
+  if (!authenticatedUserRef) {
+    response.status(403).send({
+      error: 'user is not found in database',
+    });
+    return;
+  }
+
+  const numCoins: number = request.body?.coins;
+  // Add the items to the user account
+  const addedCoins = await purchases.addCoinsManual(authenticatedUserRef, numCoins);
+  if (!addedCoins) {
+    response.status(503).json({ error: 'error granting coins entitlement.' });
+    return;
+  }
+
+  response.json({ status: 'Purchase verified and coins granted.' });
 });
 
 app.post('/addCoins', async (request: RequestWithUser, response: functions.Response) => {
