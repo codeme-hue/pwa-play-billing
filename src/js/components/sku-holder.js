@@ -60,7 +60,7 @@ class SkuHolder extends LitElement {
 
   renderStyles() {
     return css`
-      #purchase_box__${unsafeCSS(this.details.itemId)} {
+      #purchase_box__ {
         border: 1px solid #ddd;
         padding: 20px;
         margin: 10px;
@@ -69,7 +69,7 @@ class SkuHolder extends LitElement {
         flex-grow: 1;
       }
 
-      #purchase_box__${unsafeCSS(this.details.itemId)}:hover {
+      #purchase_box__:hover {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
 
@@ -152,7 +152,7 @@ class SkuHolder extends LitElement {
     ${this.renderStyles()}
   </style>
 
-      <div id="purchase_box__${unsafeCSS(this.details.itemId)}">
+      <div id="purchase_box__">
         ${this.type === 'coin'
           ? html`<p style="font-weight: bold;">${this.details.title}</p>`
           : html`<h1>${this.details.title}</h1>`}

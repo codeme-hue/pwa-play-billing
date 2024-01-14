@@ -44,6 +44,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   document.getElementById('debug-btn').onclick = () => {
     document.getElementById('debug-box').show();
   };
+  
   // Setup Firebase and authentication
   const firebase = new Firebase(appBar, log);
 
