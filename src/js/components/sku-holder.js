@@ -67,17 +67,18 @@ class SkuHolder extends LitElement {
         border-radius: 8px;
         transition: box-shadow 0.3s ease-in-out;
         flex-grow: 1;
+        color: #ffffff;
       }
 
       #purchase_box__:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px #ffffff;
       }
 
       h1 {
         font-family: 'Arial', sans-serif;
         font-size: 24px;
         font-weight: bold;
-        color: #333;
+        color: #ffffff;
       }
 
       p {
@@ -103,6 +104,7 @@ class SkuHolder extends LitElement {
 
       mwc-button {
         margin-left: 0px;
+        background-color: #000000 !important;
         transition: background-color 0.3s ease-in-out;
       }
 
