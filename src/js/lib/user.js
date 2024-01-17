@@ -142,30 +142,30 @@ export class User {
     }
   }
 
-    /**
+  /**
    *
    * @param {number} coins - Coins to adding coins
    */
-    async addCoinsManual(coins) {
-      try {
-        const response = await (
-          await fetch('/api/addCoinsManual', {
-            method: 'post',
-            headers: this.auth,
-            body: JSON.stringify({
-              coins: coins,
-            }),
-          })
-        ).json();
-        this.log(JSON.stringify(response));
-        if (response.error) {
-          return false;
-        }
-        return true;
-      } catch (error) {
-        this.log('Failed to add coins');
-        this.log(error.message);
+  async addCoinsManual(coins) {
+    try {
+      const response = await (
+        await fetch('/api/addCoinsManual', {
+          method: 'post',
+          headers: this.auth,
+          body: JSON.stringify({
+            coins: coins,
+          }),
+        })
+      ).json();
+      this.log(JSON.stringify(response));
+      if (response.error) {
         return false;
       }
+      return true;
+    } catch (error) {
+      this.log('Failed to add coins');
+      this.log(error.message);
+      return false;
     }
+  }
 }

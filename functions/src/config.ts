@@ -19,7 +19,8 @@
  */
 
 // service account credentials
-export const serviceAccountEmail = 'firebase-adminsdk-7e4fh@ghost-city-408703.iam.gserviceaccount.com';
+export const serviceAccountEmail =
+  'firebase-adminsdk-7e4fh@ghost-city-408703.iam.gserviceaccount.com';
 export const serviceAccountPrivateKey = '63cb8b30b95343c1f603c7d90262c63da51360e9';
 
 // app package name

@@ -61,8 +61,8 @@ class AppBar extends LitElement {
       <mwc-top-app-bar-fixed>
         <div slot="title">${this.title}</div>
         ${this.photoURL !== ''
-          // ? html`<p slot="actionItems" @click="${this._showCoinMenu}">
-          ? html`<p slot="actionItems">
+          ? // ? html`<p slot="actionItems" @click="${this._showCoinMenu}">
+            html`<p slot="actionItems">
               <span id="coinAmt">${this.coinAmt}</span> coins <span></span>
             </p>`
           : html``}

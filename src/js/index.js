@@ -44,36 +44,43 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   document.getElementById('debug-btn').onclick = () => {
     document.getElementById('debug-box').show();
   };
-  
+
   // Setup Firebase and authentication
   const firebase = new Firebase(appBar, log);
 
-  if ('getDigitalGoodsService' in window) {
-    // Digital Goods API is supported!
-    log('Digital Goods API is suported');
-    try {
-      const service = await window.getDigitalGoodsService('https://play.google.com/billing');
-      // Google Play Billing is supported!
-      const skuDetails = await service.getDetails(['product_coins1', 'product_coins2', 'product_coins3', 'product_coins4', 'product_coins5', 'product_coins6']);
-      for (item of skuDetails) {
-        // Format the price according to the user locale. 
-        const localizedPrice = new Intl.NumberFormat(navigator.language, {
-          style: 'currency',
-          currency: item.price.currency,
-        }).format(item.price.value);
+  // if ('getDigitalGoodsService' in window) {
+  //   // Digital Goods API is supported!
+  //   log('Digital Goods API is suported');
+  //   try {
+  //     const service = await window.getDigitalGoodsService('https://play.google.com/billing');
+  //     // Google Play Billing is supported!
+  //     const skuDetails = await service.getDetails([
+  //       'product_coins1',
+  //       'product_coins2',
+  //       'product_coins3',
+  //       'product_coins4',
+  //       'product_coins5',
+  //       'product_coins6',
+  //     ]);
+  //     for (item of skuDetails) {
+  //       // Format the price according to the user locale.
+  //       const localizedPrice = new Intl.NumberFormat(navigator.language, {
+  //         style: 'currency',
+  //         currency: item.price.currency,
+  //       }).format(item.price.value);
 
-        log(item.itemId.toString(), item.title, localizedPrice.toString(), item.description);
+  //       log(item.itemId.toString(), item.title, localizedPrice.toString(), item.description);
 
-        // Render the price to the UI.
-        renderProductDetails(item.itemId, item.title, localizedPrice, item.description);
-      }
-    } catch (error) {
-      // Google Play Billing is not available. Use another payment flow.
-      return;
-    }
-  } else {
-    log('Digital goods API tidak terinstall')
-  }
+  //       // Render the price to the UI.
+  //       renderProductDetails(item.itemId, item.title, localizedPrice, item.description);
+  //     }
+  //   } catch (error) {
+  //     // Google Play Billing is not available. Use another payment flow.
+  //     return;
+  //   }
+  // } else {
+  //   log('Digital goods API tidak terinstall');
+  // }
 
   let user = null;
   let service = null;
@@ -91,7 +98,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
       coins: sku.coins,
     }));
 
-    availableItems.set(skus)
+    availableItems.set(skus);
     // Set up an instance of Play Billing Service
     const { PlayBillingService } = await import('./lib/play-billing');
     service = new PlayBillingService(skus);
@@ -115,12 +122,10 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     }
   });
 
-
   document.addEventListener('sku-purchase', async (e) => {
     if (e.detail.valid) {
-
       await user.addCoinsManual(e.detail.coins);
- 
+
       // Refreshes the profiles entitlements and the purchased items.
       await refreshPurchases(service, user);
       notify(`${e.detail.title} Purchased!`);
@@ -199,57 +204,57 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   /**
    * Sets up the available skus to be displayed in the app for purchase and consumption
    */
-  async function marketSetup() {
-    // Check to see if the Digital Goods API is available
-    if (await service.isAvailable()) {
-      log('Digital Goods Service is available and connected to Play Billing!');
-      try {
-        // Attach the service to skuList
-        skuList.service = service;
-        coinDialog.service = service;
+  // async function marketSetup() {
+  //   // Check to see if the Digital Goods API is available
+  //   if (await service.isAvailable()) {
+  //     log('Digital Goods Service is available and connected to Play Billing!');
+  //     try {
+  //       // Attach the service to skuList
+  //       skuList.service = service;
+  //       coinDialog.service = service;
 
-        const skus = await service.getSkus();
-        log(`getDetails returned ${JSON.stringify(skus)}`);
-        availableItems.set(skus || []);
+  //       const skus = await service.getSkus();
+  //       log(`getDetails returned ${JSON.stringify(skus)}`);
+  //       availableItems.set(skus || []);
 
-        await refreshPurchases(service, user);
+  //       await refreshPurchases(service, user);
 
-        document.addEventListener('sku-consume', async (e) => {
-          const purchase = e.detail.purchase;
-          log(`Sku ${purchase.itemId} was consumed`);
-          await user.removeEntitlement(purchase);
-          await refreshPurchases(service, user);
-          notify(`${purchase.itemId} Consumed!`);
-        });
+  //       document.addEventListener('sku-consume', async (e) => {
+  //         const purchase = e.detail.purchase;
+  //         log(`Sku ${purchase.itemId} was consumed`);
+  //         await user.removeEntitlement(purchase);
+  //         await refreshPurchases(service, user);
+  //         notify(`${purchase.itemId} Consumed!`);
+  //       });
 
-        document.addEventListener('sku-purchase', async (e) => {
-          if (e.detail.valid) {
-            const sku = e.detail.sku;
-            log(`Sku ${sku.itemId} was purchased`);
-            const token = e.detail.response.details.token;
-            await user.grantEntitlementAndAcknowledge(sku, token);
-            /*
-             * Note that we have moved purchase acknowledgement to the backend
-             * server via the Google Play Developer API to be more secure.
-             * Granting entitlements and acknowledging the purchase now
-             * happen in the same call on the backend.
-             *
-             * Please see functions/src/index.ts for the implementation.
-             */
-            // If purchase is repeatable, consume it immediately
-            if (service.getPurchaseType(sku) === 'repeatable') {
-              await service.consume(token);
-            }
-            // Refreshes the profiles entitlements and the purchased items.
-            await refreshPurchases(service, user);
-            notify(`${sku.title} Purchased!`);
-          }
-        });
-      } catch (e) {
-        log(e);
-      }
-    } else {
-      log('The Digital Goods API is required for this demo!');
-    }
-  }
+  //       document.addEventListener('sku-purchase', async (e) => {
+  //         if (e.detail.valid) {
+  //           const sku = e.detail.sku;
+  //           log(`Sku ${sku.itemId} was purchased`);
+  //           const token = e.detail.response.details.token;
+  //           await user.grantEntitlementAndAcknowledge(sku, token);
+  //           /*
+  //            * Note that we have moved purchase acknowledgement to the backend
+  //            * server via the Google Play Developer API to be more secure.
+  //            * Granting entitlements and acknowledging the purchase now
+  //            * happen in the same call on the backend.
+  //            *
+  //            * Please see functions/src/index.ts for the implementation.
+  //            */
+  //           // If purchase is repeatable, consume it immediately
+  //           if (service.getPurchaseType(sku) === 'repeatable') {
+  //             await service.consume(token);
+  //           }
+  //           // Refreshes the profiles entitlements and the purchased items.
+  //           await refreshPurchases(service, user);
+  //           notify(`${sku.title} Purchased!`);
+  //         }
+  //       });
+  //     } catch (e) {
+  //       log(e);
+  //     }
+  //   } else {
+  //     log('The Digital Goods API is required for this demo!');
+  //   }
+  // }
 });

@@ -1,4 +1,6 @@
 dist
 public
 functions/lib
+functions/src
 build
+src/js/components

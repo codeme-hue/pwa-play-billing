@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { LitElement, html, css, unsafeCSS} from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 import '@material/mwc-button';
 
@@ -92,9 +92,10 @@ class SkuHolder extends LitElement {
         transform: translateY(-50%);
         animation: floatCoin 2s ease-in-out infinite;
       }
-  
+
       @keyframes floatCoin {
-        0%, 100% {
+        0%,
+        100% {
           transform: translateY(-50%);
         }
         50% {
@@ -150,9 +151,9 @@ class SkuHolder extends LitElement {
 
   render() {
     return html`
-    <style>
-    ${this.renderStyles()}
-  </style>
+      <style>
+        ${this.renderStyles()}
+      </style>
 
       <div id="purchase_box__">
         ${this.type === 'coin'
@@ -166,4 +167,3 @@ class SkuHolder extends LitElement {
 }
 
 customElements.define('sku-holder', SkuHolder);
-

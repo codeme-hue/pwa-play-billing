@@ -61,6 +61,6 @@ export const EXAMPLE_SKUS: SkuDB[] = [
   { sku: 'product_coins3', type: 'repeatable' },
   { sku: 'product_coins4', type: 'repeatable' },
   { sku: 'product_coins5', type: 'repeatable' },
-  { sku: 'product_coins6', type: 'repeatable' }
+  { sku: 'product_coins6', type: 'repeatable' },
   // { sku: 'basic_sub', type: 'subscription' },
 ];

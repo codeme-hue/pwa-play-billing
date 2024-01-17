@@ -35,7 +35,7 @@ class SkuList extends LitElement {
       service: { type: Object }, // Instance of PlayBillingService, see 'src/js/lib/play-billing.js'
       locale: { type: String },
       type: { type: String }, // Either photo, sku, or coin
-      addcoins: {type: Function},
+      addcoins: { type: Function },
     };
   }
 
@@ -51,7 +51,7 @@ class SkuList extends LitElement {
     this.type = 'sku';
     this.addcoins = () => {
       console.log('nah fungsi nya bisa nih');
-    }
+    };
   }
 
   /**

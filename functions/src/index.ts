@@ -161,7 +161,7 @@ app.post('/getUser', async (request: RequestWithUser, response: functions.Respon
       hasPremiumSub: userData.hasPremiumSub,
       numCoins: userData.numCoins,
       theme: userData.theme,
-      best: userData.best, 
+      best: userData.best,
     });
     return;
   }

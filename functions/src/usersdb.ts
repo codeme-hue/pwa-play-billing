@@ -45,7 +45,7 @@ export interface User {
   numCoins: number;
   lastQueryTime: number;
   theme: string;
-  best: number,
+  best: number;
 }
 
 /**
