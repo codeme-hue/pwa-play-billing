@@ -24,11 +24,11 @@ import * as functions from 'firebase-functions';
 import * as purchases from './purchases';
 import { EXAMPLE_SKUS, IN_APP_COIN_COST, VALID_THEME_NAMES } from './skusValue';
 import * as usersdb from './usersdb';
-import * as rtdn from './notifications';
+// import * as rtdn from './notifications';
 import * as tokensdb from './tokensdb';
-import { topicID } from './config';
+// import { topicID } from './config';
 
-import { HttpsError } from 'firebase-functions/lib/providers/https';
+// import { HttpsError } from 'firebase-functions/lib/providers/https';
 
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
@@ -483,81 +483,81 @@ main.use('/api', app);
 
 exports.main = functions.https.onRequest(main);
 
-export const rtdnListener = functions.pubsub.topic(topicID).onPublish(async (data, context) => {
-  try {
-    // Convert the incoming Realtime Developer notification
-    const developerNotification = <rtdn.DeveloperNotification>data.json;
-    const sku = developerNotification.subscriptionNotification?.subscriptionId;
-    const purchaseToken = developerNotification.subscriptionNotification?.purchaseToken;
-    const notification = developerNotification.subscriptionNotification?.notificationType;
-    // Cannot proceed without this information
-    if (!sku || !purchaseToken || !notification) {
-      throw new HttpsError('internal', 'Invalid subscription.');
-    }
-    // Search token database for this token and see which user it is associated with.
-    // Note: new purchases will not be in the token store and will not be processed here
-    const userRef = await tokensdb.getUserRefFromToken(purchaseToken);
-    if (!userRef) {
-      throw new HttpsError('internal', 'User not in database.');
-    }
-    // The RTDN contains the purchaseToken but no other information.
-    // Get the full subscription details via the Play Developer API
-    const subPurchase = await purchases.fetchSubscriptionPurchase(sku, purchaseToken);
-    if (!subPurchase) {
-      throw new HttpsError('internal', 'Error getting subscription details.');
-    }
-    let actionSuccessful = false;
-    // Act upon the incoming notification
-    switch (notification) {
-      // TODO: what needs to be done for the following cases?
-      case rtdn.NotificationType.SUBSCRIPTION_PRICE_CHANGE_CONFIRMED:
-      case rtdn.NotificationType.SUBSCRIPTION_DEFERRED:
-      case rtdn.NotificationType.SUBSCRIPTION_PAUSE_SCHEDULE_CHANGED:
-        break;
-      case rtdn.NotificationType.SUBSCRIPTION_CANCELED:
-        // TODO add FCM to send push message to apps for renewal offer
-        break;
-      // For the following cases, remove entitlement
-      case rtdn.NotificationType.SUBSCRIPTION_ON_HOLD:
-      case rtdn.NotificationType.SUBSCRIPTION_REVOKED:
-      case rtdn.NotificationType.SUBSCRIPTION_EXPIRED:
-      case rtdn.NotificationType.SUBSCRIPTION_PAUSED:
-        actionSuccessful = await purchases.setHasSub(userRef, subPurchase, sku, false);
+// export const rtdnListener = functions.pubsub.topic(topicID).onPublish(async (data, context) => {
+//   try {
+//     // Convert the incoming Realtime Developer notification
+//     const developerNotification = <rtdn.DeveloperNotification>data.json;
+//     const sku = developerNotification.subscriptionNotification?.subscriptionId;
+//     const purchaseToken = developerNotification.subscriptionNotification?.purchaseToken;
+//     const notification = developerNotification.subscriptionNotification?.notificationType;
+//     // Cannot proceed without this information
+//     if (!sku || !purchaseToken || !notification) {
+//       throw new HttpsError('internal', 'Invalid subscription.');
+//     }
+//     // Search token database for this token and see which user it is associated with.
+//     // Note: new purchases will not be in the token store and will not be processed here
+//     const userRef = await tokensdb.getUserRefFromToken(purchaseToken);
+//     if (!userRef) {
+//       throw new HttpsError('internal', 'User not in database.');
+//     }
+//     // The RTDN contains the purchaseToken but no other information.
+//     // Get the full subscription details via the Play Developer API
+//     const subPurchase = await purchases.fetchSubscriptionPurchase(sku, purchaseToken);
+//     if (!subPurchase) {
+//       throw new HttpsError('internal', 'Error getting subscription details.');
+//     }
+//     let actionSuccessful = false;
+//     // Act upon the incoming notification
+//     switch (notification) {
+//       // TODO: what needs to be done for the following cases?
+//       case rtdn.NotificationType.SUBSCRIPTION_PRICE_CHANGE_CONFIRMED:
+//       case rtdn.NotificationType.SUBSCRIPTION_DEFERRED:
+//       case rtdn.NotificationType.SUBSCRIPTION_PAUSE_SCHEDULE_CHANGED:
+//         break;
+//       case rtdn.NotificationType.SUBSCRIPTION_CANCELED:
+//         // TODO add FCM to send push message to apps for renewal offer
+//         break;
+//       // For the following cases, remove entitlement
+//       case rtdn.NotificationType.SUBSCRIPTION_ON_HOLD:
+//       case rtdn.NotificationType.SUBSCRIPTION_REVOKED:
+//       case rtdn.NotificationType.SUBSCRIPTION_EXPIRED:
+//       case rtdn.NotificationType.SUBSCRIPTION_PAUSED:
+//         actionSuccessful = await purchases.setHasSub(userRef, subPurchase, sku, false);
 
-        // TODO add FCM to send push messages to apps to immediately
-        // block entitlement. For now, rely on apps to poll getEntitlements
-        break;
-      // For the following cases, grant entitlement
-      case rtdn.NotificationType.SUBSCRIPTION_RENEWED:
-      case rtdn.NotificationType.SUBSCRIPTION_PURCHASED:
-        // For basic subscription, add 100 coins to user's account when first
-        // purchased and every time it is renewed.
-        actionSuccessful = await purchases.grantSubBenefits(userRef, sku);
-      // falls through
-      case rtdn.NotificationType.SUBSCRIPTION_RECOVERED:
-      case rtdn.NotificationType.SUBSCRIPTION_RESTARTED:
-        actionSuccessful = await purchases.setHasSub(userRef, subPurchase, sku, true);
-        // TODO add FCM to send push messages to apps to ensure
-        // immediate entitlement. For now, rely on apps to poll getEntitlements
-        break;
-      case rtdn.NotificationType.SUBSCRIPTION_IN_GRACE_PERIOD:
-        // TODO add FCM to tell apps to show warning message to user
-        // to fix their payment method
-        break;
-    }
-    if (actionSuccessful) {
-      console.log(
-        'Adjusted entitlement for ' + sku + ' to RTDN: ' + rtdn.NotificationType[notification],
-      );
-    } else {
-      console.log(
-        'Failed to adjust entitlement for ' +
-          sku +
-          ' to RTDN: ' +
-          rtdn.NotificationType[notification],
-      );
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
+//         // TODO add FCM to send push messages to apps to immediately
+//         // block entitlement. For now, rely on apps to poll getEntitlements
+//         break;
+//       // For the following cases, grant entitlement
+//       case rtdn.NotificationType.SUBSCRIPTION_RENEWED:
+//       case rtdn.NotificationType.SUBSCRIPTION_PURCHASED:
+//         // For basic subscription, add 100 coins to user's account when first
+//         // purchased and every time it is renewed.
+//         actionSuccessful = await purchases.grantSubBenefits(userRef, sku);
+//       // falls through
+//       case rtdn.NotificationType.SUBSCRIPTION_RECOVERED:
+//       case rtdn.NotificationType.SUBSCRIPTION_RESTARTED:
+//         actionSuccessful = await purchases.setHasSub(userRef, subPurchase, sku, true);
+//         // TODO add FCM to send push messages to apps to ensure
+//         // immediate entitlement. For now, rely on apps to poll getEntitlements
+//         break;
+//       case rtdn.NotificationType.SUBSCRIPTION_IN_GRACE_PERIOD:
+//         // TODO add FCM to tell apps to show warning message to user
+//         // to fix their payment method
+//         break;
+//     }
+//     if (actionSuccessful) {
+//       console.log(
+//         'Adjusted entitlement for ' + sku + ' to RTDN: ' + rtdn.NotificationType[notification],
+//       );
+//     } else {
+//       console.log(
+//         'Failed to adjust entitlement for ' +
+//           sku +
+//           ' to RTDN: ' +
+//           rtdn.NotificationType[notification],
+//       );
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });

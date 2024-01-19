@@ -71,6 +71,7 @@ export class Firebase {
     try {
       await this.firebase.auth().signInWithPopup(this.provider);
       this.log('User sign in successful');
+      location.reload();
     } catch (error) {
       this.log('Something went wrong!');
       this.log(error.message);

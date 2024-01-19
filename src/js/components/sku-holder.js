@@ -62,27 +62,31 @@ class SkuHolder extends LitElement {
     return css`
       #purchase_box__ {
         border: 1px solid #ddd;
+        width: 110px;
+        height: 170px;
         padding: 20px;
         margin: 10px;
         border-radius: 8px;
         transition: box-shadow 0.3s ease-in-out;
         flex-grow: 1;
         color: #ffffff;
+        background-image: url("./images/bgCoins.png");
       }
 
       #purchase_box__:hover {
-        box-shadow: 0 4px 8px #ffffff;
+        box-shadow: 0 4px 8px #252629;
       }
 
       h1 {
         font-family: 'Arial', sans-serif;
         font-size: 24px;
         font-weight: bold;
-        color: #ffffff;
+        color: #000000;
       }
 
       p {
         margin-bottom: 10px;
+        color: #353536;
       }
 
       .coin-animation {

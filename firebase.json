@@ -11,23 +11,9 @@
     ]
   },
   "functions": {
-    "predeploy": ["npm run lint", "npm --prefix \"$RESOURCE_DIR\" run build"],
-    "runtime": "nodejs20",
-    "source": "functions"
-  },
-  "emulators": {
-    "functions": {
-      "port": 5001
-    },
-    "firestore": {
-      "port": 8080
-    },
-    "hosting": {
-      "port": 5000
-    },
-    "ui": {
-      "enabled": true
-    },
-    "singleProjectMode": true
+    "redeploy": 
+    [
+      "npm --prefix \"%RESOURCE_DIR%\" run lint"
+    ]
   }
 }

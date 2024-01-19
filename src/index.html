@@ -30,7 +30,7 @@
     if ('serviceWorker' in navigator) {
       // Use the window load event to keep the page load performant
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js');
+        navigator.serviceWorker.register('service-worker.js');
       });
     }
   </script>
@@ -58,10 +58,15 @@
       <theme-picker slot="theme" id="theme-picker"></theme-picker>
     </coin-dialog>
 
-    <div id="products-container">
-      <h1 class="section-title">Coins</h1>
+    <!-- <div id="products-container"> -->
+      <!-- <h1 class="section-title">Coins</h1> -->
       <sku-list id="items-to-buy"></sku-list>
+    <!-- </div> -->
+
+    <div id="products-container">
+      <h1 class="section-title">LOGIN</h1>
     </div>
+
   </div>
 
   <div id="interactive-section">

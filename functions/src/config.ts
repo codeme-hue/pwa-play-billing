@@ -27,7 +27,7 @@ export const serviceAccountPrivateKey = '63cb8b30b95343c1f603c7d90262c63da51360e
 export const packageName = 'com.ghostcity.rgs';
 
 // RTDN pub/sub topic ID
-export const topicID = '<RTDN_TOPIC_ID>';
+// export const topicID = '<RTDN_TOPIC_ID>';
 
 // needed scopes
 export const scopes: string[] = ['https://www.googleapis.com/auth/androidpublisher'];
